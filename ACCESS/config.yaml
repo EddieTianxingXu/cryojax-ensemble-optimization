@@ -1,7 +1,7 @@
 # Parameters marked with (*) are optional
 
 data_params:
-  path_to_relion_project: /work/hdd/bfly/txu8/project/particles/
+  path_to_relion_project: /work/hdd/bfly/txu8/project/
   path_to_starfile: /work/nvme/bfly/txu8/project/STAR/EMD-50421_particles.star
   loads_envelope: True # (*) Default: false, loads envelope function parameters
   data_sign: "dark-on-light" # Relion convention, dark particles on a light background
