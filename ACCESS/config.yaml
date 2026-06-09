@@ -1,0 +1,42 @@
+# Parameters marked with (*) are optional
+
+data_params:
+  path_to_relion_project: /home/eddie/Documents/Hsp90-p23/particles
+  path_to_starfile: /home/eddie/Documents/Hsp90-p23/star/starfile_half1.star
+  loads_envelope: True # (*) Default: false, loads envelope function parameters
+  data_sign: "dark-on-light" # Relion convention, dark particles on a light background
+  path_to_volumetric_mask: # (*) e.g., the mask from a refinement procedure
+
+# How many images are used to compute likelihoods in parallel
+# This can usually be a large value since Fourier Slice Extraction is memory efficient
+n_images_in_parallel: 5000
+
+# Maximum number of iterations for the reweighting algorithm
+max_iter: 500
+
+# Convergence tolerance for the multiplicative gradient weight optimization
+tol: 1e-4
+
+# ab initio version, ignores starfile poses
+# default is false
+estimates_poses: false
+
+# A collection of structural files
+# can be any combination of pdb, cif, mrc files
+path_to_structural_files:
+- /home/eddie/Documents/Hsp90-p23/pdb/final_walker_0.pdb
+- /home/eddie/Documents/Hsp90-p23/pdb/initial_model.pdb
+
+path_to_output_dir: ./reweighting_results/
+
+########### Atomic model exclusive parameters ###########
+# These will be ignored if no structural files have
+# pdb or cif format.
+
+# atom selection string in mdtraj convention
+# Examples: "all", "not element H", "name CA"
+atom_selection: "all"
+
+# Load Debye-Waller b-factors from provided PDBs
+loads_b_factors: true
+#########################################################
