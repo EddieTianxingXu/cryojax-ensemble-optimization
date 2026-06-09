@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/bin/run_ensemble_reweighting", line 6, in <module>
+    sys.exit(main_cli())
+             ^^^^^^^^^^
+  File "/u/txu8/project/cryojax-ensemble-optimization/src/cryojax_eo/commands/_run_ensemble_reweighting.py", line 433, in main_cli
+    main(add_args(parser).parse_args())
+  File "/u/txu8/project/cryojax-ensemble-optimization/src/cryojax_eo/commands/_run_ensemble_reweighting.py", line 388, in main
+    config = ReweightingConfig(**config_dict)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/pydantic/main.py", line 263, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ReweightingConfig
+path_to_structural_files.1
+  Path does not point to a file [type=path_not_file, input_value='/work/nvme/bfly/txu8/pro.../PDB/pdb/50422_7DCX.pdb', input_type=str]

@@ -1,0 +1,3 @@
+usage: run_ensemble_reweighting [-h] --config CONFIG
+                                [--from-likelihoods [PATH]]
+run_ensemble_reweighting: error: unrecognized arguments: --path_to_starfile /work/nvme/bfly/txu8/project/STAR/EMD-50421_particles_truncate.star
