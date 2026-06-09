@@ -7,7 +7,7 @@
 #SBATCH --mem=120000M
 #SBATCH --export=ALL
 #SBATCH --time=1:00:00
-#SBATCH --array=0%1
+#SBATCH --array=0-1%2
 #SBATCH --account=bfly-delta-gpu
 
 unset LD_LIBRARY_PATH
@@ -22,6 +22,7 @@ export PYTHONPATH=$PYTHONPATH:/u/txu8/project/github/package-update/src
 
 COMMANDS=(
     "run_ensemble_reweighting --config config.yaml --n_images_in_parallel 50000"
+    "run_ensemble_reweighting --config config.yaml"
 )
 
 
