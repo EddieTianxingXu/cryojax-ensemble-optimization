@@ -21,8 +21,7 @@ export XLA_FLAGS="--xla_gpu_autotune_level=0 --xla_gpu_enable_triton_gemm=false"
 export PYTHONPATH=$PYTHONPATH:/u/txu8/project/github/package-update/src
 
 COMMANDS=(
-    "run_ensemble_reweighting --config config.yaml --n_images_in_parallel 50000"
-    "run_ensemble_reweighting --config config.yaml"
+    "run_ensemble_reweighting --config config.yaml --path_to_starfile /work/nvme/bfly/txu8/project/STAR/EMD-50421_particles_truncate.star"
 )
 
 
