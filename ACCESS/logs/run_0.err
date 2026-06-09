@@ -1,15 +1,39 @@
+Computing likelihoods:   0%|          | 0/2 [00:00<?, ?it/s]
+batches:   0%|          | 0/6 [00:00<?, ?it/s][A
+                                              [AComputing likelihoods:   0%|          | 0/2 [00:03<?, ?it/s]
 Traceback (most recent call last):
   File "/u/txu8/miniconda3/envs/cryojax_eo_env/bin/run_ensemble_reweighting", line 6, in <module>
     sys.exit(main_cli())
              ^^^^^^^^^^
   File "/u/txu8/project/cryojax-ensemble-optimization/src/cryojax_eo/commands/_run_ensemble_reweighting.py", line 433, in main_cli
     main(add_args(parser).parse_args())
-  File "/u/txu8/project/cryojax-ensemble-optimization/src/cryojax_eo/commands/_run_ensemble_reweighting.py", line 388, in main
-    config = ReweightingConfig(**config_dict)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/pydantic/main.py", line 263, in __init__
-    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
-                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-pydantic_core._pydantic_core.ValidationError: 1 validation error for ReweightingConfig
-path_to_structural_files.1
-  Path does not point to a file [type=path_not_file, input_value='/work/nvme/bfly/txu8/pro.../PDB/pdb/50422_7DCX.pdb', input_type=str]
+  File "/u/txu8/project/cryojax-ensemble-optimization/src/cryojax_eo/commands/_run_ensemble_reweighting.py", line 421, in main
+    run_ensemble_reweighting_from_scratch(config)
+  File "/u/txu8/project/cryojax-ensemble-optimization/src/cryojax_eo/commands/_run_ensemble_reweighting.py", line 293, in run_ensemble_reweighting_from_scratch
+    likelihoods = compute_likelihoods_for_structural_file(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/txu8/project/cryojax-ensemble-optimization/src/cryojax_eo/commands/_run_ensemble_reweighting.py", line 203, in compute_likelihoods_for_structural_file
+    for batch in tqdm(dataloader, desc="batches", leave=False):
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/tqdm/std.py", line 1181, in __iter__
+    for obj in iterable:
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/jax_dataloader/loaders/jax.py", line 26, in EpochIterator
+    yield data[idx]
+          ~~~~^^^^^
+  File "/u/txu8/project/cryojax-ensemble-optimization/src/cryojax_eo/dataset/_datasets_and_dataloaders.py", line 31, in __getitem__
+    "particle_stack": self.cryojax_dataset[index],
+                      ~~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/cryospax/_dataset/relion.py", line 754, in __getitem__
+    images = _load_image_stack_from_mrc(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/cryospax/_dataset/relion.py", line 1387, in _load_image_stack_from_mrc
+    with mrcfile.mmap(path_to_filename, mode="r", permissive=True) as mrc:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/mrcfile/load_functions.py", line 274, in mmap
+    return MrcMemmap(name, mode=mode, permissive=permissive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/mrcfile/mrcfile.py", line 109, in __init__
+    self._open_file(name)
+  File "/u/txu8/miniconda3/envs/cryojax_eo_env/lib/python3.11/site-packages/mrcfile/mrcfile.py", line 126, in _open_file
+    self._iostream = open(name, self._mode + 'b')
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/work/hdd/bfly/txu8/project/particles/particles/FoilHole_24700257_Data_24699912_24699914_20221024_125053_Fractions.mrcs'
