@@ -24,8 +24,8 @@ estimates_poses: false
 # A collection of structural files
 # can be any combination of pdb, cif, mrc files
 path_to_structural_files:
-- /work/nvme/bfly/txu8/project/PDB/final_walker_0.pdb
-- /work/nvme/bfly/txu8/project/PDB/pdb/initial_model.pdb
+- /work/nvme/bfly/txu8/project/PDB/50421_7YCZ.pdb
+- /work/nvme/bfly/txu8/project/PDB/pdb/50422_7DCX.pdb
 
 path_to_output_dir: ./reweighting_results/
 

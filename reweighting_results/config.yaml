@@ -1,0 +1,16 @@
+atom_selection: all
+data_params:
+  data_sign: dark-on-light
+  loads_envelope: true
+  path_to_relion_project: /home/eddie/Documents/MRC
+  path_to_starfile: /home/eddie/Documents/STAR/EMD-50421_particles_truncate.star
+  path_to_volumetric_mask: null
+estimates_poses: false
+loads_b_factors: true
+max_iter: 500
+n_images_in_parallel: 5000
+path_to_output_dir: ./reweighting_results/
+path_to_structural_files:
+- /home/eddie/Documents/PDB/50421_7YCZ.pdb
+- /home/eddie/Documents/PDB/50422_7DCX.pdb
+tol: 1e-4
