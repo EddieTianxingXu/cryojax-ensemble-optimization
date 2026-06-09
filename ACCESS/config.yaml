@@ -1,8 +1,8 @@
 # Parameters marked with (*) are optional
 
 data_params:
-  path_to_relion_project: /home/eddie/Documents/Hsp90-p23/particles
-  path_to_starfile: /home/eddie/Documents/Hsp90-p23/star/starfile_half1.star
+  path_to_relion_project: /work/hdd/bfly/txu8/project/particles/
+  path_to_starfile: /work/nvme/bfly/txu8/project/STAR/EMD-50421_particles.star
   loads_envelope: True # (*) Default: false, loads envelope function parameters
   data_sign: "dark-on-light" # Relion convention, dark particles on a light background
   path_to_volumetric_mask: # (*) e.g., the mask from a refinement procedure
@@ -24,8 +24,8 @@ estimates_poses: false
 # A collection of structural files
 # can be any combination of pdb, cif, mrc files
 path_to_structural_files:
-- /home/eddie/Documents/Hsp90-p23/pdb/final_walker_0.pdb
-- /home/eddie/Documents/Hsp90-p23/pdb/initial_model.pdb
+- /work/nvme/bfly/txu8/project/PDB/final_walker_0.pdb
+- /work/nvme/bfly/txu8/project/PDB/pdb/initial_model.pdb
 
 path_to_output_dir: ./reweighting_results/
 
