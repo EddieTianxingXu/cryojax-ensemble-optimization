@@ -7,7 +7,7 @@
 #SBATCH --mem=120000M
 #SBATCH --export=ALL
 #SBATCH --time=1:00:00
-#SBATCH --array=0-1%2
+#SBATCH --array=1%1
 #SBATCH --account=bfly-delta-gpu
 
 unset LD_LIBRARY_PATH
@@ -21,14 +21,14 @@ export XLA_FLAGS="--xla_gpu_autotune_level=0 --xla_gpu_enable_triton_gemm=false"
 export PYTHONPATH=$PYTHONPATH:/u/txu8/project/github/package-update/src
 
 COMMANDS=(
-    "run_ensemble_reweighting --config config.yaml"
-    "run_ensemble_reweighting --config config.yaml --path_to_starfile /work/nvme/bfly/txu8/project/STAR/EMD-50421_particles_truncate.star"
+   # "run_ensemble_reweighting --config config.yaml"
+    "run_ensemble_reweighting --config config_truncstar.yaml"
 )
 
 
 export PYTHONFAULTHANDLER=1
 
-MAPPED_ID=$((SLURM_ARRAY_TASK_ID))
+MAPPED_ID=$((SLURM_ARRAY_TASK_ID-1))
 
 eval "${COMMANDS[$MAPPED_ID]}"
 

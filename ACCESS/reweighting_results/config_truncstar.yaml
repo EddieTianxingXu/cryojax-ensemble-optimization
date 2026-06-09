@@ -3,7 +3,7 @@ data_params:
   data_sign: dark-on-light
   loads_envelope: true
   path_to_relion_project: /work/hdd/bfly/txu8/project/
-  path_to_starfile: /work/nvme/bfly/txu8/project/STAR/EMD-50421_particles.star
+  path_to_starfile: /work/nvme/bfly/txu8/project/STAR/EMD-50421_particles_truncate.star
   path_to_volumetric_mask: null
 estimates_poses: false
 loads_b_factors: true

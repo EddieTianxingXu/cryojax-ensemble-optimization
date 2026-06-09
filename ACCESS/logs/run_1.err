@@ -1,3 +1,9 @@
-usage: run_ensemble_reweighting [-h] --config CONFIG
-                                [--from-likelihoods [PATH]]
-run_ensemble_reweighting: error: unrecognized arguments: --path_to_starfile /work/nvme/bfly/txu8/project/STAR/EMD-50421_particles_truncate.star
+Computing likelihoods:   0%|          | 0/2 [00:00<?, ?it/s]
+batches:   0%|          | 0/1 [00:00<?, ?it/s][AW0609 15:01:25.337186 3620278 bfc_allocator.cc:317] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.22GiB with freed_by_count=0. The caller indicates that this is not a failure, but this may mean that there could be performance gains if more memory were available.
+
+batches: 100%|██████████| 1/1 [02:10<00:00, 130.11s/it][A
+                                                       [AComputing likelihoods:  50%|█████     | 1/2 [02:13<02:13, 133.95s/it]
+batches:   0%|          | 0/1 [00:00<?, ?it/s][AW0609 15:01:30.004302 3620278 bfc_allocator.cc:317] Allocator (GPU_0_bfc) ran out of memory trying to allocate 1.22GiB with freed_by_count=0. The caller indicates that this is not a failure, but this may mean that there could be performance gains if more memory were available.
+
+batches: 100%|██████████| 1/1 [00:03<00:00,  3.08s/it][A
+                                                      [AComputing likelihoods: 100%|██████████| 2/2 [02:18<00:00, 57.99s/it] Computing likelihoods: 100%|██████████| 2/2 [02:18<00:00, 69.39s/it]
