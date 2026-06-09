@@ -211,7 +211,7 @@ def compute_likelihoods_for_structural_file(
                 n_images_in_parallel=10,
             )
             batch["particle_stack"]["parameters"]["pose"] = poses
-            new_parameter_file.append(batch["particle_stack"]["parameters"])
+           # new_parameter_file.append(batch["particle_stack"]["parameters"])
 
         batch_likelihoods = _compute_likelihoods_fn(
             voxel_volume,
