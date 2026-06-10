@@ -53,6 +53,7 @@ def simulate_image_with_white_gaussian_noise(
         normalizes_signal=True,
     )
 
+
     distribution = cxs.GaussianWhiteNoiseModel(
         image_model,
         variance=1.0,
