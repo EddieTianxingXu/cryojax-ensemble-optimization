@@ -11,5 +11,8 @@ if __name__ == "__main__":
         atom_selection="all",
         noise_snr_range=[1e10, 1e10], #SNR is dynamically determined in David's ll calculation, here store massive SNR
         images_per_file=2000,
-        batch_size=args.sim_batch_size
+        batch_size=args.sim_batch_size,
+        rotmode=args.rotmode,
+        n_rot_samples=args.n_rot_samples,
+        rot_sigma_radians=args.rot_sigma_radians
     )

@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
-new = np.load("/home/eddie/Documents/GitHub/cryojax-ensemble-optimization/ACCESS/mrc_images/ctf_grids20.npy")
-old = np.load("/home/eddie/Documents/GitHub/cryojax-ensemble-optimization/ACCESS/mrc_images1/expt_ctfs20.npy")
+new = np.load("/home/eddie/Documents/GitHub/cryojax-ensemble-optimization/ACCESS/half1Images/expt_ctfs35.npy")
+old = np.load("/home/eddie/Documents/GitHub/cryojax-ensemble-optimization/ACCESS/half1ImagesOld/expt_ctfs35.npy")
 
 plt.imshow(new[0])
 plt.show()

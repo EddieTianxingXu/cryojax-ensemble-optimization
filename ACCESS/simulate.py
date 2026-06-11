@@ -18,7 +18,8 @@ from cryojax_eo.simulator._image_simulation import simulate_image_with_white_gau
 import jax.numpy as jnp
 from datetime import datetime
 
-from cryojax.simulator import ContrastTransferTheory
+from rotation import UniformPoseParameterFile, GaussianPerturbedPoseParameterFile
+from cryojax.ndimage import make_frequency_grid
 
 
 def get_expt(
@@ -33,7 +34,7 @@ def get_expt(
             path_to_starfile=star_path,
             options=dict(
                 loads_envelope=loads_envelop,
-                broadcasts_image_config=False,
+                broadcasts_image_config=True,
             ),
         )
 
@@ -59,36 +60,33 @@ def get_expt(
     expt_path = expt_dir / f"expt_images{n_expt_images}.npy"
     np.save(file=expt_path, arr=expt_images)
 
-    """
     ctf_grids = []
     for item in tqdm(expt_param_file, desc="Evaluating CTFs", leave=False):
         tt = item["transfer_theory"]
         image_config = item["image_config"]
-        freq_grid = image_config.get_coordinate_grid(physical=True)
         wavelength = image_config.wavelength_in_angstroms
+        print(image_config)
+
+        # FIX: Generate a true reciprocal-space frequency grid starting from corners
+        freq_grid = make_frequency_grid(
+            shape=image_config.shape, 
+            grid_spacing=image_config.pixel_size,
+            outputs_rfftfreqs=False
+        )
 
         ctf_2d = tt.ctf(
             frequency_grid_in_angstroms=freq_grid,
             wavelength_in_angstroms=wavelength,
             amplitude_contrast_ratio=tt.amplitude_contrast_ratio,
             phase_shift=tt.phase_shift,
-            outputs_exp=True,  
+            outputs_exp=False,  
         )
-    
-            
-
-        ctf_centered = jnp.fft.fftshift(jnp.fft.fft2(ctf_2d, axes=(-2, -1)))
-        ctf_grids.append(ctf_centered)
-
-    import matplotlib.pyplot as plt
-    ctf_grids = np.array(ctf_grids)
-    
-    plt.imshow(ctf_grids[0])
-    plt.show()
+        
+        ctf_2d_centered = jnp.fft.fftshift(ctf_2d, axes=(-2, -1))
+        ctf_grids.append(ctf_2d_centered)
 
     ctf_path = expt_dir / f"expt_ctfs{n_expt_images}.npy"
     np.save(file=ctf_path, arr=ctf_grids)
-    """
 
 
 # from _run_ensemble_reweighting.py
@@ -113,7 +111,9 @@ def get_sim(
         noise_snr_range: list[float],
         images_per_file,
         batch_size,
-        overwrite: bool = True,
+        rotmode: Literal["star", "uniform", "gaussian"],
+        n_rot_samples: int,
+        rot_sigma_radians: float,
         seed: int = 0,
 
 ):
@@ -126,8 +126,28 @@ def get_sim(
                 broadcasts_image_config=True,
             ),
         )
+    key = jax.random.key(seed=seed)
+    key_rot, key_snr, key_noise = jax.random.split(key, 3)
+    if rotmode == 'uniform':
+        expt_param_file = UniformPoseParameterFile(
+            expt_param_file,
+            n_rot_samples,
+            key_rot,
+        )
+        print('used uniform sampling for rotation')
+    elif rotmode == 'gaussian':
+        expt_param_file = GaussianPerturbedPoseParameterFile(
+            expt_param_file,
+            n_rot_samples,
+            key_rot,
+            rot_sigma_radians,
+        )
+        print('used gaussian sampling for rotation')
+    elif rotmode == 'star':
+        print('used original star file poses')
+    else:
+        raise ValueError(f'unknown rotation mode as {rotmode}')
 
-    
     image_sign = -1.0 if data_sign == "dark-on-light" else 1.0
     image_config = expt_param_file[0]["image_config"]
     # from _run_ensemble_reweighting.py
@@ -157,19 +177,11 @@ def get_sim(
     voxel_volume = cxs.FourierVoxelGridVolume.from_real_voxel_grid(voxel_grid)
 
 
-    sim_dataset = RelionParticleDataset(
-        parameter_file=expt_param_file,
-        path_to_relion_project=sim_dir,
-        mode='w',
-        mrcfile_settings={"overwrite": overwrite},
-    )
-
-    key = jax.random.key(seed=seed)
 
     n_images = len(expt_param_file)
 
     constant_args = ((voxel_volume,), mask, image_sign)
-    key_snr, key_noise = jax.random.split(key)
+
     keys_per_image = jax.random.split(key_noise, n_images)
     ensemble_indices_per_image = jnp.zeros((n_images,), dtype=jnp.int32)
     snr_per_image = jax.random.uniform(
@@ -193,6 +205,7 @@ def get_sim(
             images_per_file=images_per_file,
             batch_size=batch_size,
         )
+    
     
 def simulate_particle_stack_to_npy(
     parameter_file,
@@ -314,16 +327,23 @@ def _parse_args():
                         help="shard index for distributed execution, starting from 0.")
     parser.add_argument("--total_shards", "-totshards", type=int, default=1, 
                         help="total number of shards for distributed execution")
-    parser.add_argument("--n_sampled_rotations", "-rot", type=int, default=50,
-                    help="number of sampled rotations to sample from SO(3) in MC, \
-                    default = 50")
     parser.add_argument("--expt_batch_size", "-ebatch", type=int, default=8,
                     help="the batch size for experimental images in reweighting, \
-                    default = 16")
+                    default = 8")
     parser.add_argument("--rot_batch_size", "-rbatch", type=int, default=16,
                         help="the batch size for (rotation of) simulated images in reweighting, \
                         default = 16")
     parser.add_argument("-d", "--debug", action="store_true", help="Enable debug logging")
+    parser.add_argument("--rotmode", choices=["star", "uniform", "gaussian"], default="star",
+                        help="the rotation mode for sampling extra poses per particle, \
+                        default = 'star', i.e., according to star file and no extra")
+    parser.add_argument("--n_rot_samples", "-rot", type=int, default=2000,
+                    help="the number of rotations per particle for simulating images, ignored when --rotmode = 'star'\
+                    default = 2000")
+    parser.add_argument("--rot_sigma_radians", "-sigma", type=float, default=0.1,
+                    help="the sigma in gaussian sampling of rotations for simulating images, ignored when --rotmode is not 'gaussian'\
+                    default = 0.1")
+    
     
     
     args = parser.parse_args()
