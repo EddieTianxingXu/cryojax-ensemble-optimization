@@ -7,7 +7,7 @@
 #SBATCH --mem=120000M
 #SBATCH --export=ALL
 #SBATCH --time=1:00:00
-#SBATCH --array=0-5%6
+#SBATCH --array=0-3%4
 #SBATCH --account=bfly-delta-gpu
 
 unset LD_LIBRARY_PATH
