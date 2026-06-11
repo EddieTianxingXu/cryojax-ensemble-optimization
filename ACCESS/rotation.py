@@ -17,7 +17,7 @@ def _vmap_sample_tangent(
         n,
         sigma
 ):
-    return jax.random.normal(key, (n, 3) * sigma)
+    return jax.random.normal(key, (n, 3)) * sigma
 
 def _so3_to_zyz(R: SO3):
     #SO3 to euler angle poses (zyz) in degrees
@@ -37,7 +37,7 @@ def _zyz_to_so3(pose: EulerAnglePose) -> SO3:
     psi = jnp.deg2rad(pose.psi_angle)
     theta = jnp.deg2rad(pose.theta_angle)
 
-    return SO3.from_z_radians(phi).compose(SO3.from_z_radians(theta)).compose(SO3.from_z_radians(psi))
+    return SO3.from_z_radians(phi).compose(SO3.from_y_radians(theta)).compose(SO3.from_z_radians(psi))
 
 def _get_rotation(item: dict) -> SO3:
     return _zyz_to_so3(item['pose'])
