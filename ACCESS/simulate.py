@@ -265,7 +265,7 @@ def simulate_particle_stack_to_npy(
         )
         
         np_images = np.array(images)
-        np.save(output_dir / f"sim_images{file_index}{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}.npy", np_images)
+        np.save(output_dir / f"sim_images{file_index}{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.npy", np_images)
 
 
 
