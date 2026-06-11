@@ -249,7 +249,7 @@ def simulate_particle_stack_to_npy(
         
         #different from cryospax.simulate_particle_stack, save images as npy after use. 
         np_images = np.array(images)
-        np.save(output_dir / f"sim_images{file_index}{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}.npy", np_images)
+        np.save(output_dir / f"sim_images{file_index}{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.npy", np_images)
 
 
     if remainder > 0:
