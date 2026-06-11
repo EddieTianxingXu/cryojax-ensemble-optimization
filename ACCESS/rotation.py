@@ -20,14 +20,23 @@ def _vmap_sample_tangent(
     return jax.random.normal(key, (n, 3)) * sigma
 
 def _so3_to_zyz(R: SO3):
-    #SO3 to euler angle poses (zyz) in degrees
     rot_m = R.as_matrix()
-    theta = jnp.arccos(jnp.clip(rot_m[2, 2], -1.0, 1.0))
-    sin_t = jnp.sin(theta)
-    gimbal = jnp.abs(sin_t) < 1e-7
+    
+    sin_t_back = jnp.sqrt(rot_m[0, 2]**2 + rot_m[1, 2]**2)
+    theta = jnp.arctan2(sin_t_back, rot_m[2, 2])
+    gimbal = jnp.abs(sin_t_back) < 1e-7
 
-    phi = jnp.where(gimbal, 0.0, jnp.arctan2(rot_m[2, 1],  rot_m[2, 0]))
-    psi = jnp.where(gimbal, jnp.arctan2(-rot_m[0, 1], rot_m[0, 0]), jnp.arctan2(rot_m[1, 2], -rot_m[0, 2]))
+
+    phi_standard = jnp.arctan2(rot_m[1, 2], rot_m[0, 2])
+    psi_standard = jnp.arctan2(rot_m[2, 1], -rot_m[2, 0])
+
+
+    phi_gimbal = jnp.arctan2(rot_m[1, 0], rot_m[0, 0])
+    psi_gimbal = 0.0
+
+
+    phi = jnp.where(gimbal, phi_gimbal, phi_standard)
+    psi = jnp.where(gimbal, psi_gimbal, psi_standard)
 
     return jnp.rad2deg(phi), jnp.rad2deg(theta), jnp.rad2deg(psi)
 

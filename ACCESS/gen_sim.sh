@@ -21,10 +21,12 @@ export XLA_FLAGS="--xla_gpu_autotune_level=0 --xla_gpu_enable_triton_gemm=false"
 export PYTHONPATH=$PYTHONPATH:/u/txu8/project/github/package-update/src
 
 COMMANDS=(
-    "python -m get_sim -sbatch 512 --sim_dir /work/hdd/bfly/txu8/project/HSP90-p23/finImagesStarfull -star /work/hdd/bfly/txu8/project/HSP90-p23/star/starfile_half1.star -pdb /work/hdd/bfly/txu8/project/HSP90-p23/pdb/final_walker_0.pdb --rotmode star -rot 200"
+    "python -m get_sim -sbatch 512 --sim_dir /work/hdd/bfly/txu8/project/HSP90-p23/finImagesUniform200 -star /work/hdd/bfly/txu8/project/HSP90-p23/star/starfile_half1_truncate.star -pdb /work/hdd/bfly/txu8/project/HSP90-p23/pdb/final_walker_0.pdb --rotmode star -rot 200"
+    "python -m get_sim -sbatch 512 --sim_dir /work/hdd/bfly/txu8/project/HSP90-p23/finImagesGaussian200 -star /work/hdd/bfly/txu8/project/HSP90-p23/star/starfile_half1_truncate.star -pdb /work/hdd/bfly/txu8/project/HSP90-p23/pdb/final_walker_0.pdb --rotmode star -rot 200"
 
 
-    "python -m get_sim -sbatch 512 --sim_dir /work/hdd/bfly/txu8/project/HSP90-p23/initImagesStarfull -star /work/hdd/bfly/txu8/project/HSP90-p23/star/starfile_half1.star -pdb /work/hdd/bfly/txu8/project/HSP90-p23/pdb/initial_model.pdb --rotmode star -rot 200"
+    "python -m get_sim -sbatch 512 --sim_dir /work/hdd/bfly/txu8/project/HSP90-p23/initImagesUniform200 -star /work/hdd/bfly/txu8/project/HSP90-p23/star/starfile_half1_truncate.star -pdb /work/hdd/bfly/txu8/project/HSP90-p23/pdb/initial_model.pdb --rotmode star -rot 200"
+    "python -m get_sim -sbatch 512 --sim_dir /work/hdd/bfly/txu8/project/HSP90-p23/initImagesGaussian200 -star /work/hdd/bfly/txu8/project/HSP90-p23/star/starfile_half1_truncate.star -pdb /work/hdd/bfly/txu8/project/HSP90-p23/pdb/initial_model.pdb --rotmode star -rot 200"
 
 )
 
