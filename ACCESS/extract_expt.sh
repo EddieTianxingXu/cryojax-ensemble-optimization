@@ -21,7 +21,7 @@ export XLA_FLAGS="--xla_gpu_autotune_level=0 --xla_gpu_enable_triton_gemm=false"
 export PYTHONPATH=$PYTHONPATH:/u/txu8/project/github/package-update/src
 
 COMMANDS=(
-    "python -m get_sim -sbatch 512 --expt_dir /work/hdd/bfly/txu8/project/HSP90-p23/half1trunc -star /work/hdd/bfly/txu8/project/HSP90-p23/star/starfile_half1_truncate.star -mrc /work/hdd/bfly/txu8/project/HSP90-p23/particles/"
+    "python -m extract_expt --expt_dir /work/hdd/bfly/txu8/project/HSP90-p23/half1trunc -star /work/hdd/bfly/txu8/project/HSP90-p23/star/starfile_half1_truncate.star -mrc /work/hdd/bfly/txu8/project/HSP90-p23/particles/"
 )
 
 
