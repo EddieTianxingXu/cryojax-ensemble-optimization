@@ -262,6 +262,8 @@ def likelihood_iso_gaussian_marg(
     )
     computed_image = image_model.simulate()
     observed_image = jnp.asarray(image)
+    
+
 
     if dilated_mask is not None:
         mask2d = dilated_mask.project(pose, image_config)
@@ -276,4 +278,4 @@ def likelihood_iso_gaussian_marg(
     loss = -n_pixels * jnp.log(
         jnp.linalg.norm(scale * computed_image - observed_image + offset)
     )
-    return loss
+    return loss, computed_image, observed_image

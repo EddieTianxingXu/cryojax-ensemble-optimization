@@ -200,6 +200,9 @@ def compute_likelihoods_for_structural_file(
         new_parameter_file = RelionParticleParameterFile(
             path_to_starfile=path_to_starfile, mode="w", exist_ok=True
         )
+
+    sim_images = []
+    observed_images = []
     for batch in tqdm(dataloader, desc="batches", leave=False):
         if estimates_poses:
             poses = estimate_poses(
@@ -213,13 +216,17 @@ def compute_likelihoods_for_structural_file(
             batch["particle_stack"]["parameters"]["pose"] = poses
            # new_parameter_file.append(batch["particle_stack"]["parameters"])
 
-        batch_likelihoods = _compute_likelihoods_fn(
+        batch_likelihoods, sim_image, expt_image= _compute_likelihoods_fn(
             voxel_volume,
             batch["particle_stack"],
             dilated_mask,
             image_sign,
         )
         likelihoods.append(batch_likelihoods)
+        sim_images.append(sim_image)
+        observed_images.append(expt_image)
+    
+
 
     if estimates_poses:
         new_parameter_file.starfile_data["particles"]["rlnImageName"] = (
@@ -227,7 +234,7 @@ def compute_likelihoods_for_structural_file(
         )
         new_parameter_file.save(overwrite=True)
 
-    return jnp.concatenate(likelihoods)
+    return jnp.concatenate(likelihoods), sim_images, observed_images
 
 
 def run_ensemble_reweighting_from_scratch(
@@ -290,7 +297,7 @@ def run_ensemble_reweighting_from_scratch(
     for i in progress_bar:
         file = config["path_to_structural_files"][i]
         logging.info(f"Computing likelihoods for {file}...")
-        likelihoods = compute_likelihoods_for_structural_file(
+        likelihoods, sim_images, expt_images = compute_likelihoods_for_structural_file(
             path_to_structure=file,
             relion_dataset=relion_dataset,
             selection_string=config["atom_selection"],
@@ -305,6 +312,8 @@ def run_ensemble_reweighting_from_scratch(
         dict_key = Path(file).stem
         likelihoods_dict[dict_key] = likelihoods
         likelihood_matrix[:, i] = np.asarray(likelihoods)
+        np.save(f"/home/eddie/Documents/Hsp90-p23/david_sim_images_{i}.npy", sim_images)
+        np.save(f"/home/eddie/Documents/Hsp90-p23/david_expt_images_{i}.npy", expt_images)
 
     weights = optimize_weights(
         log_likelihood_matrix=jnp.array(likelihood_matrix),
