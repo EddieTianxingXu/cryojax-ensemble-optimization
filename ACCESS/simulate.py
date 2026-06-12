@@ -65,9 +65,7 @@ def get_expt(
         tt = item["transfer_theory"]
         image_config = item["image_config"]
         wavelength = image_config.wavelength_in_angstroms
-        print(image_config)
 
-        # FIX: Generate a true reciprocal-space frequency grid starting from corners
         freq_grid = make_frequency_grid(
             shape=image_config.shape, 
             grid_spacing=image_config.pixel_size,
